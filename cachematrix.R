@@ -1,5 +1,8 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The makeCacheMatrix() function creates an object
+##  allowing to store a matrix and a cache of its inverse
+## The cacheSolve() function allows using the cacheMatrix object
+##  to cache inverse results, therefore optimizing by computing it once
+
 
 ## The makeCacheMatrix function returns a wrapper matrix object.
 ## This wrapper allows to cache the result of the inverse
@@ -23,8 +26,19 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## The cacheSolve function returns the inverse matrix of that wrapped by 'x'
+## Its formal parameter is that created by the makeCacheMatrix() function
+## If the inverse was previously calculated, it returns it immediately
+## else, it calculates it using solve(), updates the cache and returns it
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  inv <- x$getinverse()
+  if(!is.null(inv)) {
+    message("getting cached data")
+    return(inv)
+  }
+  data <- x$get()
+  inv <- solve(data, ...)
+  x$setinv(inv)
+  inv
 }
